@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+python-multipart
+PyMuPDF
+python-dotenv
+pydantic
+pydantic-settings
+sqlalchemy
+psycopg2-binary
+minio
+requests
+aiofiles
+openai

@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: lifepick-postgres
+    environment:
+      POSTGRES_DB: lifepick
+      POSTGRES_USER: lifepick
+      POSTGRES_PASSWORD: lifepick123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: lifepick-minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    container_name: lifepick-backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://lifepick:lifepick123@postgres:5432/lifepick
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: lifepick-files
+      MINIO_SECURE: "false"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - minio
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: lifepick-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  minio_data:
