@@ -68,7 +68,7 @@ function App() {
 
   const handleSearch = async () => {
     if (!searchKeyword.trim()) {
-      setMessage("請輸入搜尋關鍵字。");
+      setMessage("輸入你想找的東西。");
       return;
     }
 

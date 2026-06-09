@@ -48,7 +48,7 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_BASE_URL: http://172.16.225.129:8000
+        VITE_API_BASE_URL: http://192.168.229.133:8000
     container_name: lifepick-frontend
     ports:
       - "5173:80"
@@ -59,3 +59,7 @@ services:
 volumes:
   postgres_data:
   minio_data:
+
+environment:
+  OPENAI_API_KEY: ${OPENAI_API_KEY}
+  OPENAI_MODEL: ${OPENAI_MODEL}

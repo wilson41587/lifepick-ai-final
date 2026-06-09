@@ -25,3 +25,4 @@ class FileRecord(Base):
     cons = Column(JSON, nullable=True)
 
     status = Column(String(50), default="uploaded", nullable=False)
+    embedding = Column(JSON, nullable=True)

@@ -15,6 +15,9 @@ stringData:
   POSTGRES_PASSWORD: lifepick123
   MINIO_ROOT_USER: minioadmin
   MINIO_ROOT_PASSWORD: minioadmin
+  OPENAI_API_KEY: ""
+  OPENAI_CHAT_MODEL: gpt-4o-mini
+  OPENAI_EMBEDDING_MODEL: text-embedding-3-small
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -201,6 +204,21 @@ spec:
               value: lifepick-files
             - name: MINIO_SECURE
               value: "false"
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: OPENAI_API_KEY
+            - name: OPENAI_CHAT_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: OPENAI_CHAT_MODEL
+            - name: OPENAI_EMBEDDING_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: OPENAI_EMBEDDING_MODEL
 ---
 apiVersion: v1
 kind: Service

@@ -70,64 +70,10 @@ def extract_text(file_path: Path, file_type: str) -> str:
 
 def analyze_text(text: str) -> Dict[str, Any]:
     lowered = text.lower()
+    # Call API to get real analysis results. For now, we return dummy data based on keyword matching.
+    # LLM 回傳 summary / category / tags / score / pros / cons
 
-    category = "一般資料"
-    tags = []
-    pros = []
-    cons = ["資料可能需要進一步確認或更新"]
-    score = 70
-
-    food_keywords = ["餐廳", "美食", "聚餐", "火鍋", "義大利麵", "平價", "學生", "咖啡"]
-    if any(k in text for k in food_keywords):
-        category = "美食推薦"
-        tags.extend(["美食", "餐廳", "聚餐"])
-        pros.extend(["適合生活決策", "內容包含餐廳或聚餐資訊"])
-        score += 10
-
-    if "學生" in text or "平價" in text:
-        tags.extend(["學生", "平價"])
-        pros.append("適合學生族群或預算有限的使用者")
-        score += 5
-
-    if "台中" in text:
-        tags.append("台中")
-        score += 3
-
-    product_keywords = ["耳機", "音質", "續航", "降噪", "cp值", "商品", "心得"]
-    if any(k in lowered for k in product_keywords) or any(k in text for k in product_keywords):
-        category = "商品心得"
-        tags.extend(["商品", "心得", "CP值"])
-        pros.append("內容包含產品使用心得")
-        score += 8
-
-    if "耳機" in text:
-        tags.append("藍牙耳機")
-
-    travel_keywords = ["旅遊", "景點", "行程", "交通", "台南", "住宿"]
-    if any(k in text for k in travel_keywords):
-        category = "旅遊行程"
-        tags.extend(["旅遊", "景點", "行程"])
-        pros.append("內容包含旅遊規劃資訊")
-        score += 8
-
-    tags = list(dict.fromkeys(tags))
-
-    if not tags:
-        tags = ["文件", "生活資料"]
-
-    if not pros:
-        pros = ["可以快速整理文件重點"]
-
-    clean_text = " ".join(text.split())
-    if clean_text:
-        summary = clean_text[:120]
-        if len(clean_text) > 120:
-            summary += "..."
-    else:
-        summary = "目前無法從此檔案擷取文字內容。"
-
-    score = max(0, min(score, 100))
-
+    
     return {
         "summary": summary,
         "category": category,
